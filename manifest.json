@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Ad Blocker",
+  "version": "1.0",
+  "description": "Blocks Ad from Yt Videos",
+    "icons": {
+    "16": "leviii.jpeg",
+    "48": "leviii.jpeg",
+    "128": "leviii.jpeg"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "leviii.jpeg"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["Blocker.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
