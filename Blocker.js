@@ -1,36 +1,36 @@
-let lastVideoId = null;
+let lastVideoId = sessionStorage.getItem("yt_lastVideoId") || null;
 
 function getVideoId() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("v");
+  const params = new URLSearchParams(window.location.search);
+  return params.get("v");
 }
 
-function checklastvideoId(currentid, lastVideoId) {
-    return (currentid == lastVideoId);
+function isNotYouTube() {
+  return !window.location.hostname.includes("youtube.com/watch");
 }
-
 
 function ModifyUrl() {
-    let currentID = getVideoId();
-     if (checklastvideoId(currentID, lastVideoId)){
-        return 
-     }
-     
-     lastVideoId = currentID;
+  if (isNotYouTube()) return;
+  let currentID = getVideoId();
 
-     const newUrl = window.location.href.replace(
-        "www.youtube.com",
-        "www.youtube.com."
-    );
+  if (!currentID) return;
+  let lastVideoId = sessionStorage.getItem("yt_lastVideoId") || null;
 
-    window.location.replace(newUrl);
-    return
+  if (currentID === lastVideoId) return;
+
+  lastVideoId = currentID;
+
+  sessionStorage.setItem("yt_lastVideoId", currentID);
+
+  const newUrl = window.location.href.replace(
+    "www.youtube.com",
+    "www.youtube.com.",
+  );
+
+  window.location.replace(newUrl);
 }
 
-function isYouTube() {
-    return window.location.hostname.includes("youtube.com");
-}
 
-if (isYouTube){
-    ModifyUrl();
-}
+
+ModifyUrl();
+document.addEventListener("yt-navigate-finish", ModifyUrl);
